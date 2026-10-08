@@ -58,7 +58,7 @@ const SCHEMA = {
         additionalProperties: false
       }
     },
-    restes: liste("Ce qui est lisible dans les notes mais n'entre dans aucune case, cité tel qu'écrit.")
+    restes: liste("Case « Autres informations » : ce qui est utile mais n'entre dans aucune des 13 cases, en courtes formulations claires.")
   },
   required: [
     "prenom", "niveau", "nuance", "points", "interets", "situations", "frequence", "exclus",
@@ -70,19 +70,20 @@ const SCHEMA = {
 const CONSIGNES = `Tu lis les photos de notes manuscrites qu'une professeure de français langue étrangère a prises pendant une leçon d'essai. Les notes mêlent français et anglais, avec des abréviations, des flèches, des encadrés et des cœurs (un cœur signale ce que l'élève aime). Tu reportes ce qui est écrit dans une fiche à 13 cases. La professeure relira et validera chaque case : ta lecture doit être fidèle, pas complète à tout prix.
 
 Règles :
-1. Ne reporte que ce qui figure dans les notes. Aucune déduction, aucun ajout. Une case sans information reste vide (chaîne vide ou liste vide).
-2. niveau : seulement si un niveau CECRL est écrit (A0, A1, A2, B1, B2, C1, C2). Ne l'estime jamais d'après le contenu. nuance : seulement si elle est écrite à côté du niveau.
-3. frequence : seulement si un nombre de cours par semaine est écrit (par exemple « 1x semaine »). Un volume en heures va dans restes.
-4. points : ce que la professeure note comme à travailler (grammaire, conjugaison, structure, compréhension orale, confiance, prononciation, articles…). Trois au maximum, dans l'ordre des notes, en un à quatre mots chacun.
-5. interets : loisirs et goûts. medias : uniquement les titres et noms propres (séries, films, podcasts, artistes, chaînes, applications). Un même élément ne va que dans une seule des deux cases.
-6. situations : moments concrets où l'élève veut se débrouiller en français (restaurant, réunions, téléphone, garderie, démarches…). Un objectif général (vivre à Paris, réussir un examen) n'est pas une situation : il va dans restes.
-7. exclus : sujets que la professeure note comme à éviter (par exemple « pas politique »).
-8. experience : ce que l'élève a vécu en français hors cours (séjours, vie dans un pays francophone, entourage). passe : les cours déjà suivis. metier : métier ou études. lieu : où vit l'élève.
-9. note : une demande particulière (argot, expressions, un format de cours souhaité).
-10. prenom : le prénom de l'élève s'il est écrit, en général en haut de la première page. Si un prénom isolé pourrait être celui d'un proche, reporte-le et signale-le dans incertains.
-11. incertains : chaque mot reporté dont la lecture est douteuse, avec la case concernée et la valeur exactement telle que tu l'as écrite dans la fiche.
-12. restes : tout ce qui est lisible mais n'entre dans aucune case (objectif général, devoirs, famille, erreurs relevées, phrases inachevées), cité court et tel qu'écrit.
-13. Écris en français. Traduis les mots anglais courants (listening devient compréhension orale), mais garde tels quels les titres et les noms propres. Formulations courtes, majuscule initiale, pas de point final.`;
+1. Reporte tout ce qui est écrit, y compris ce qui est abrégé, incomplet ou noté en style télégraphique, dès que le sens est clair. Exemples : « 10 % série » désigne la série Dix pour cent ; « W sur les vidéos » veut dire qu'elle travaille sur les vidéos ; « sinon habite à Londres » complète le lieu de vie. N'ajoute en revanche aucune information qui n'est pas dans les notes. Une case sans information reste vide (chaîne vide ou liste vide).
+2. Quand plusieurs notes concernent la même case, réunis-les dans cette case (par exemple lieu : « Sydney en ce moment, sinon Londres » ; métier : « Marketing au département de l'Éducation, sur les vidéos »).
+3. niveau : seulement si un niveau CECRL est écrit (A0, A1, A2, B1, B2, C1, C2). Ne l'estime jamais d'après le contenu. nuance : seulement si elle est écrite à côté du niveau.
+4. frequence : seulement si un nombre de cours par semaine est écrit (par exemple « 1x semaine »). Un volume en heures va dans restes.
+5. points : ce que la professeure note comme à travailler (grammaire, conjugaison, structure, compréhension orale, confiance, prononciation, articles…), y compris une erreur ou une remarque de prononciation qu'elle a relevée (« ils parlaient → pas ant » devient « Prononciation des terminaisons en -ent »). Trois au maximum, dans l'ordre des notes, en quelques mots chacun. S'il y en a davantage, les suivants vont dans restes.
+6. interets : loisirs et goûts. medias : uniquement les titres et noms propres (séries, films, podcasts, artistes, chaînes, applications). Un même élément ne va que dans une seule des deux cases.
+7. situations : moments concrets où l'élève veut se débrouiller en français (restaurant, réunions, téléphone, garderie, démarches…). Un objectif général (vivre à Paris, réussir un examen) n'est pas une situation : il va dans restes.
+8. exclus : sujets que la professeure note comme à éviter (par exemple « pas politique »).
+9. experience : ce que l'élève a vécu en français hors cours (séjours, vie dans un pays francophone, entourage). passe : les cours déjà suivis. metier : métier ou études. lieu : où vit l'élève.
+10. note : une demande particulière (argot, expressions, un format de cours souhaité).
+11. prenom : le prénom de l'élève s'il est écrit, en général en haut de la première page. Si un prénom isolé pourrait être celui d'un proche, reporte-le et signale-le dans incertains.
+12. incertains : chaque mot reporté dont la lecture est douteuse, avec la case concernée et la valeur exactement telle que tu l'as écrite dans la fiche.
+13. restes : c'est la case « Autres informations » de la fiche. Mets-y uniquement ce qui est lisible et utile mais n'entre vraiment dans aucune des 13 cases (objectif général, devoirs, famille, volume horaire…). Chaque élément est une courte formulation claire en français, compréhensible sans les notes. N'y répète jamais une information déjà reportée dans une case. Ignore un intitulé resté sans contenu (par exemple « Pb principal » suivi de rien).
+14. Écris en français. Traduis les mots anglais courants (listening devient compréhension orale), mais garde tels quels les titres et les noms propres. Formulations courtes, majuscule initiale, pas de point final.`;
 
 function memeTexte(a, b) {
   const ha = crypto.createHash("sha256").update(String(a)).digest();
@@ -95,12 +96,12 @@ function propre(valeur, max) {
   return valeur.replace(/\s+/g, " ").trim().slice(0, max || 200);
 }
 
-function listePropre(valeur, max) {
+function listePropre(valeur, max, longueur) {
   if (!Array.isArray(valeur)) return [];
   const vus = new Set();
   const sortie = [];
   for (const element of valeur) {
-    const mot = propre(element, 80);
+    const mot = propre(element, longueur || 80);
     const cle = mot.toLowerCase();
     if (!mot || vus.has(cle)) continue;
     vus.add(cle);
@@ -136,7 +137,7 @@ function nettoyer(brut) {
       if (incertains.length >= 20) break;
     }
   }
-  return { fiche, incertains, restes: listePropre(source.restes, 15) };
+  return { fiche, incertains, restes: listePropre(source.restes, 15, 140) };
 }
 
 function extraireJson(texteReponse) {
@@ -219,7 +220,7 @@ const DEMO = {
   medias: ["Lupin", "Dix pour cent", "Gilmore Girls", "Charles Aznavour", "Aya Nakamura", "Booba"],
   note: "Argot et expressions françaises",
   incertains: [{ champ: "medias", valeur: "Booba" }],
-  restes: ["goal : opportunité de habiter Paris", "Devoirs", "un frère et sœurs"]
+  restes: ["Objectif : avoir l'opportunité d'habiter à Paris", "Veut des devoirs", "Un frère et des sœurs"]
 };
 
 module.exports = async function handler(req, res) {
